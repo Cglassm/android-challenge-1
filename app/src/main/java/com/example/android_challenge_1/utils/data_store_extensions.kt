@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.first
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "prefs")
@@ -35,3 +36,5 @@ suspend fun Context.hasStoredCredentials(): Boolean {
     val password = getPassword()
     return !email.isNullOrEmpty() && !password.isNullOrEmpty()
 }
+
+

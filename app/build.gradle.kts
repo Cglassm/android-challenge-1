@@ -73,5 +73,6 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation("com.google.code.gson:gson:2.8.8")
 
 }
