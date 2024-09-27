@@ -7,11 +7,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.android_challenge_1.Greeting
 import com.example.android_challenge_1.auth.LoginScreen
 import com.example.android_challenge_1.auth.SignUpScreen
 import com.example.android_challenge_1.home.Home
-import com.example.android_challenge_1.home.Note
+import com.example.android_challenge_1.models.Note
 import java.util.Date
 import com.example.android_challenge_1.note.CreateNotescreen
 

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import com.example.android_challenge_1.models.Note
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -86,12 +87,6 @@ fun NoteCard(note : Note) {
     }
 }
 
-data class Note(
-    val titulo : String,
-    val contenido : String,
-    val fecha : Date,
-    val listaItems: List<String>
-)
 @Preview
 @Composable
 fun NotePreview() {
