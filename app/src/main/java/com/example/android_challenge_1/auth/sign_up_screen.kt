@@ -15,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -73,24 +72,24 @@ fun SignUpScreen(onSuccess: (String) -> Unit) {
                 ) {
                     Column() {
                         Text(
-                            text = "Hello!",
+                            text = "Bienvenido a\n NOTE APP",
                             modifier = modifier,
                             style = TextStyle(
-                                color = Color.Black,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.W300,
-                                textAlign = TextAlign.Center,
-                            )
-                        )
-                        Text(
-                            text = "Welcome to NOTED",
-                            modifier = modifier,
-                            style = TextStyle(
-                                color = Color.Black,
+                                color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.W500,
                                 textAlign = TextAlign.Center,
                                 fontFamily = FontFamily.Serif,
+                            )
+                        )
+                        Text(
+                            text = "Solicitamos que te registres con mail y contraseña y asi las notas solo las podrás ver tu",
+                            modifier = modifier,
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.W300,
+                                textAlign = TextAlign.Center,
                             )
                         )
                     }
@@ -101,13 +100,13 @@ fun SignUpScreen(onSuccess: (String) -> Unit) {
                     onValueChange = { newValue -> emailState.value = newValue },
                 )
                 OutLineTextField(
-                    "Password",
+                    "Contraseña",
                     text = passwordState.value,
                     onValueChange = { newValue -> passwordState.value = newValue },
                     isPassword = true,
                 )
                 OutLineTextField(
-                    "Repeat Password",
+                    "Repetir Contraseña",
                     text = repeatPasswordState.value,
                     onValueChange = { newValue -> repeatPasswordState.value = newValue },
                     isPassword = true,
@@ -117,7 +116,7 @@ fun SignUpScreen(onSuccess: (String) -> Unit) {
                     Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    text = "Register",
+                    text = "Registrar",
                     color = Color.Black.copy(alpha = 0.5f),
                     textColor = Color.White,
                     onClick = {
