@@ -94,18 +94,18 @@ fun SignUpScreen(onSuccess: (String) -> Unit) {
                         )
                     }
                 }
-                OutLineTextField(
+                AuthTextField(
                     "Email",
                     text = emailState.value,
                     onValueChange = { newValue -> emailState.value = newValue },
                 )
-                OutLineTextField(
+                AuthTextField(
                     "Contraseña",
                     text = passwordState.value,
                     onValueChange = { newValue -> passwordState.value = newValue },
                     isPassword = true,
                 )
-                OutLineTextField(
+                AuthTextField(
                     "Repetir Contraseña",
                     text = repeatPasswordState.value,
                     onValueChange = { newValue -> repeatPasswordState.value = newValue },
