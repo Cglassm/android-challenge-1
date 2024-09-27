@@ -11,6 +11,9 @@ import androidx.navigation.navArgument
 import com.example.android_challenge_1.Greeting
 import com.example.android_challenge_1.auth.LoginScreen
 import com.example.android_challenge_1.auth.SignUpScreen
+import com.example.android_challenge_1.home.Home
+import com.example.android_challenge_1.home.Note
+import java.util.Date
 
 @Composable
 fun OurNavHost(
@@ -40,9 +43,15 @@ fun OurNavHost(
             )
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            Greeting(
-                name = email
+
+            val notes = listOf(
+                Note("How To Draw A Professional Wireframe?", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf()),
+                Note("Ways To Succeed Early", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf("Item 1", "Item 2", "Item 3")),
+                Note("Scientific Facts Of Space", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf()),
+                Note("Ways To Succeed Early", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf("Item 1", "Item 2", "Item 3")),
+                Note("Scientific Facts Of Space", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf()),
             )
+            Home(listNota = notes)
 
         }
     }
