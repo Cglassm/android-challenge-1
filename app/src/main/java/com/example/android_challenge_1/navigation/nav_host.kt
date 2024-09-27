@@ -2,7 +2,6 @@ package com.example.android_challenge_1.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.android_challenge_1.Greeting
 import com.example.android_challenge_1.auth.LoginScreen
 import com.example.android_challenge_1.auth.SignUpScreen
+import com.example.android_challenge_1.note.CreateNotescreen
 
 @Composable
 fun OurNavHost(
@@ -43,7 +43,11 @@ fun OurNavHost(
             Greeting(
                 name = email
             )
-
+        }
+        composable("CreateNotescreen") {
+            CreateNotescreen(
+                onSave = {}
+            )
         }
     }
 }

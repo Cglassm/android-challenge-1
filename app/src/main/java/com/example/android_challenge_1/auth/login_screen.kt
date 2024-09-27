@@ -92,12 +92,12 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                         )
                     }
                 }
-                OutLineTextField(
+                AuthTextField(
                     "Email",
                     text = emailState.value,
                     onValueChange = { newValue -> emailState.value = newValue },
                 )
-                OutLineTextField(
+                AuthTextField(
                     "Contraseña",
                     text = passwordState.value,
                     onValueChange = { newValue -> passwordState.value = newValue },
@@ -105,7 +105,9 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(56.dp))
                 CustomTextButton(
-                    Modifier.fillMaxWidth().height(48.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
                     text = "Login",
                     color = Color.Black.copy(alpha = 0.5f),
                     textColor = Color.White,
