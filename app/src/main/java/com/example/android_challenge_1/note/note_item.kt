@@ -37,7 +37,7 @@ fun NoteItem(
             label = "Escriba aqui",
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.weight(1f),
-
+            maxLines = 4
             )
         IconButton(
             onClick = onDelete,
