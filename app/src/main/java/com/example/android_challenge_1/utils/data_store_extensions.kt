@@ -35,3 +35,10 @@ suspend fun Context.hasStoredCredentials(): Boolean {
     val password = getPassword()
     return !email.isNullOrEmpty() && !password.isNullOrEmpty()
 }
+
+suspend fun Context.clearPreferences() {
+    dataStore.edit { preferences ->
+        preferences.clear()
+    }
+}
+

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp.Companion.Infinity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.components.CustomTextButton
@@ -67,7 +68,8 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                     onValueChange = { newValue -> noteTitleState.value = newValue },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp)
+                        .height(100.dp),
+                    maxLines = 3
                 )
                 NoteTextfield(
                     "Escriba aquí su nota...",
@@ -75,7 +77,8 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                     onValueChange = { newValue -> noteBodyState.value = newValue },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .height(200.dp),
+                    maxLines = 50
                 )
                 NoteItemsList()
                 Spacer(modifier = Modifier.height(16.dp))
