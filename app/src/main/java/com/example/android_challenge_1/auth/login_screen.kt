@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.components.CustomTextButton
+import com.example.android_challenge_1.components.NoBackgroundTextButton
 import com.example.android_challenge_1.components.OutLineTextField
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
 import com.example.android_challenge_1.utils.getEmail
@@ -40,7 +42,7 @@ import com.example.android_challenge_1.utils.getPassword
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(onLoginSuccess: (String) -> Unit) {
+fun LoginScreen(onLoginSuccess: (String) -> Unit, onRegisterPressed: () -> Unit) {
     val context = LocalContext.current
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
@@ -108,7 +110,7 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                     Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    text = "Login",
+                    text = "Ingresar",
                     color = Color.Black.copy(alpha = 0.5f),
                     textColor = Color.White,
                     onClick = {
@@ -131,6 +133,26 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                     },
 
                     )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "No tenes cuenta aún?",
+                        style = TextStyle(
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W500,
+                            textAlign = TextAlign.Center,
+                        ),
+                    )
+                    NoBackgroundTextButton(
+                        text = "Registrame",
+                        onClick = {onRegisterPressed()},
+
+                        )
+                }
             }
         },
     )
@@ -142,6 +164,6 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
     Androidchallenge1Theme {
-        LoginScreen(onLoginSuccess = {})
+        LoginScreen(onLoginSuccess = {}, onRegisterPressed = {})
     }
 }

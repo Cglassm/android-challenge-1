@@ -12,7 +12,8 @@ fun NoteTextfield(
     label: String,
     onValueChange: (String) -> Unit,
     text: String,
-    modifier: Modifier
+    modifier: Modifier,
+    maxLines: Int
 ){
     OutLineTextField(
         modifier = modifier,
@@ -20,5 +21,6 @@ fun NoteTextfield(
         text = text,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(20.dp),
+        maxLines = maxLines
     )
 }

@@ -16,6 +16,7 @@ fun AuthTextField(
         text = text,
         onValueChange = onValueChange,
         shape = CircleShape,
-        isPassword = isPassword
+        isPassword = isPassword,
+        maxLines = 1
     )
 }
