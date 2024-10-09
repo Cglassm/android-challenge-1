@@ -6,13 +6,17 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.android_challenge_1.models.Note
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.first
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "prefs")
 
+private val gson = Gson()
+
 val EMAIL_KEY = stringPreferencesKey("user_email")
 val PASSWORD_KEY = stringPreferencesKey("user_password")
+val NOTES_LIST = stringPreferencesKey("notes_key")
 
 suspend fun Context.saveCredentials(email: String, password: String) {
     dataStore.edit { preferences ->
@@ -43,3 +47,19 @@ suspend fun Context.clearPreferences() {
     }
 }
 
+suspend fun Context.saveNotes(notes: List<Note>) {
+    val notesJson = gson.toJson(notes)
+    dataStore.edit { preferences  ->
+        preferences[NOTES_LIST] = notesJson
+    }
+}
+
+suspend fun Context.getNotes(): List<Note> {
+    val preferences = dataStore.data.first()
+    val notesJson = preferences[NOTES_LIST]
+    return if (notesJson != null) {
+        gson.fromJson(notesJson, Array<Note>::class.java).toList()
+    } else {
+        emptyList()
+    }
+}
