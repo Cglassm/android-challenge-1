@@ -47,7 +47,8 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
         .fillMaxWidth()
         .padding(32.dp)
     val noteItemsState = remember { mutableStateOf(listOf<String>()) }
-    val canBeSaved = noteTitleState.value.isNotEmpty()
+    val canBeSaved =
+        noteTitleState.value.isNotEmpty() || noteBodyState.value.isNotEmpty() || noteItemsState.value.isNotEmpty()
 
     Scaffold(
         containerColor = Color.White,
@@ -103,7 +104,7 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                                 scope.launch {
                                     val calendar = Calendar.getInstance()
                                     val day = calendar.get(Calendar.DAY_OF_MONTH)
-                                    val month = calendar.get(Calendar.MONTH) + 1 
+                                    val month = calendar.get(Calendar.MONTH) + 1
                                     val year = calendar.get(Calendar.YEAR)
                                     context.saveNewNote(
                                         noteTitle = noteTitleState.value,
