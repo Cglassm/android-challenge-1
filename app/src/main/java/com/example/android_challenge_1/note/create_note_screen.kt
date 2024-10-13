@@ -30,12 +30,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.components.CustomTextButton
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
+import com.example.android_challenge_1.utils.saveNewNote
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateNotescreen(onSave: (String) -> Unit) {
+    val context = LocalContext.current
     val noteTitleState = remember { mutableStateOf("") }
     val noteBodyState = remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val modifier = Modifier
         .fillMaxWidth()
         .padding(32.dp)
@@ -86,7 +90,12 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CreateNoteButton(
-                        onClick = {},
+                        onClick =  {
+                            onSave("")
+                            scope.launch {
+                                context.saveNewNote(noteTitle = noteTitleState.value, noteContent = noteBodyState.value, day = 1, month = 1, year = 2024, items = listOf("hola", "como", "estas"))
+                            }
+                        },
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                     )

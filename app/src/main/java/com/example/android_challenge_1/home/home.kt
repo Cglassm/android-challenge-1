@@ -33,25 +33,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.android_challenge_1.models.Note
-import com.example.android_challenge_1.utils.getNotes
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import Usernote.UserNote
+import  Usernote.ListNote
+import androidx.compose.runtime.collectAsState
+import com.example.android_challenge_1.utils.protoDataStore
+import kotlinx.coroutines.flow.Flow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
-fun Home(listNota : List<Note>) {
+fun Home( onCreateNote: () -> Unit ) {
     val context = LocalContext.current
-    var listaNotas: List<Note> = listOf()
     val scope = rememberCoroutineScope()
-    scope.launch {
-        listaNotas = context.getNotes()
-    }
+    val userNotesFlow: Flow<ListNote> = context.protoDataStore.data
+    val listaNotas = userNotesFlow.collectAsState(initial = ListNote.getDefaultInstance())
+
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = { onCreateNote() },
                 modifier = Modifier.padding( 10.dp),
                 containerColor = Color.LightGray
             ) {
@@ -72,8 +75,8 @@ fun Home(listNota : List<Note>) {
                 LazyColumn (
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(listNota) {
-                        NoteCard(it)
+                    items(listaNotas.value.notesList) {
+                        NoteCard( it )
                     }
                 }
             }
@@ -82,7 +85,7 @@ fun Home(listNota : List<Note>) {
 }
 
 @Composable
-fun NoteCard(note : Note) {
+fun NoteCard(note : UserNote) {
     Card (
         shape = RoundedCornerShape( 12.dp ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
@@ -91,9 +94,9 @@ fun NoteCard(note : Note) {
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        Column {
+        Column ( modifier = Modifier.fillMaxWidth()) {
             Text(
-                note.titulo,
+                note.title,
                 modifier = Modifier.padding(6.dp),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -102,8 +105,8 @@ fun NoteCard(note : Note) {
                 note.contenido,
                 modifier = Modifier.padding(6.dp),
             )
-            if (note.listaItems.isNotEmpty()) {
-                note.listaItems.forEach {
+            if (note.itemList.isNotEmpty()) {
+                note.itemList.forEach {
                     Text(
                         text = "- " + it,
                         modifier = Modifier.padding( 6.dp)
@@ -111,7 +114,7 @@ fun NoteCard(note : Note) {
                 }
             }
             Text(
-                text = SimpleDateFormat("dd/MM/YYYY").format(note.fecha),
+                text = "${note.fecha.day}/${note.fecha.month}/${note.fecha.year}",
                 fontSize = 12.sp,
                 color = Color.Gray,
                 modifier = Modifier
@@ -126,7 +129,7 @@ fun NoteCard(note : Note) {
 @Composable
 fun NotePreview() {
     val nota = Note( "Nota 1", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf())
-    NoteCard( nota )
+    //NoteCard( nota )
 }
 
 
@@ -142,5 +145,5 @@ fun HomePreview() {
         Note("Scientific Facts Of Space", "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.", Date(), listOf()),
     )
     val navController = rememberNavController()
-    Home(notes)
+    Home({})
 }

@@ -98,11 +98,13 @@ fun OurNavHost(
                         listOf()
                     ),
                 )
-                Home(listNota = notes)
+                Home( onCreateNote = { navController.navigate("CreateNotescreen") } )
             }
             composable("CreateNotescreen") {
                 CreateNotescreen(
-                    onSave = {}
+                    onSave = {
+                        navController.popBackStack()
+                    }
                 )
             }
             composable("AccountScreen") {
