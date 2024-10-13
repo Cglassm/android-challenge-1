@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message ListNote {
+    int32 id = 1;
+    repeated UserNote notes = 2;
+}
+
+message UserNote {
+    int32 id = 1;
+    string title = 2;
+    string contenido = 3;
+    Date fecha = 4;
+    repeated string item = 5;
+}
+
+
+message Date {
+    int32 day = 1;
+    int32 month = 2;
+    int32 year = 3;
+}
