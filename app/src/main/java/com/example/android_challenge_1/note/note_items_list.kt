@@ -24,7 +24,7 @@ fun NoteItemsList(items: MutableState<List<String>>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+           ,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items.value.forEachIndexed { index, item ->

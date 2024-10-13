@@ -72,7 +72,7 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit, onRegisterPressed: () -> Unit)
                 ) {
                     Column() {
                         Text(
-                            text = "Hello Again!",
+                            text = "Hola!!!",
                             modifier = modifier,
                             style = TextStyle(
                                 color = Color.White,
@@ -82,7 +82,7 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit, onRegisterPressed: () -> Unit)
                             )
                         )
                         Text(
-                            text = "Welcome back, you've been missed!",
+                            text = "Bienvenido denuevo, te extrañamos por aca :)",
                             modifier = modifier,
                             style = TextStyle(
                                 color = Color.White,

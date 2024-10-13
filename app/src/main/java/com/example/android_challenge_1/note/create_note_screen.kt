@@ -32,6 +32,9 @@ import com.example.android_challenge_1.components.CustomTextButton
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
 import com.example.android_challenge_1.utils.saveNewNote
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun CreateNotescreen(onSave: (String) -> Unit) {
@@ -98,12 +101,16 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                             if (canBeSaved) {
                                 onSave("")
                                 scope.launch {
+                                    val calendar = Calendar.getInstance()
+                                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+                                    val month = calendar.get(Calendar.MONTH) + 1 
+                                    val year = calendar.get(Calendar.YEAR)
                                     context.saveNewNote(
                                         noteTitle = noteTitleState.value,
                                         noteContent = noteBodyState.value,
-                                        day = 1,
-                                        month = 1,
-                                        year = 2024,
+                                        day = day,
+                                        month = month,
+                                        year = year,
                                         items = noteItemsState.value
                                     )
                                 }
