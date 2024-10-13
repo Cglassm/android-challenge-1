@@ -16,8 +16,8 @@ fun BottomNavigationBar(navController: NavHostController) {
     val email = "Example"
     BottomNavigation(backgroundColor = Color(0xFFD4A5FF), contentColor = Color.White) {
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
-            label = { Text("Home") },
+            icon = { Icon(Icons.Filled.Home, contentDescription = "Notas") },
+            label = { Text("Notas") },
             selected = navController.currentDestination?.route?.startsWith("HomeScreen") == true,
             selectedContentColor = Color(0xFF6200EE),
             unselectedContentColor = Color.White,
@@ -29,8 +29,8 @@ fun BottomNavigationBar(navController: NavHostController) {
             }
         )
         BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Person, contentDescription = "Account") },
-            label = { Text("Account") },
+            icon = { Icon(Icons.Filled.Person, contentDescription = "Cuenta") },
+            label = { Text("Cuenta") },
             selected = navController.currentDestination?.route == "AccountScreen",
             selectedContentColor = Color(0xFF6200EE),
             unselectedContentColor = Color.White,

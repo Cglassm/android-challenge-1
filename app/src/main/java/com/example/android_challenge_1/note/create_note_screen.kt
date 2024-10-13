@@ -30,15 +30,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.components.CustomTextButton
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
+import com.example.android_challenge_1.utils.saveNewNote
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun CreateNotescreen(onSave: (String) -> Unit) {
+    val context = LocalContext.current
     val noteTitleState = remember { mutableStateOf("") }
     val noteBodyState = remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val modifier = Modifier
         .fillMaxWidth()
         .padding(32.dp)
+    val noteItemsState = remember { mutableStateOf(listOf<String>()) }
+    val canBeSaved = noteTitleState.value.isNotEmpty()
 
     Scaffold(
         containerColor = Color.White,
@@ -80,15 +89,36 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                         .height(200.dp),
                     maxLines = 50
                 )
-                NoteItemsList()
+                NoteItemsList(
+                    items = noteItemsState
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CreateNoteButton(
-                        onClick = {},
+                        onClick = {
+                            if (canBeSaved) {
+                                onSave("")
+                                scope.launch {
+                                    val calendar = Calendar.getInstance()
+                                    val day = calendar.get(Calendar.DAY_OF_MONTH)
+                                    val month = calendar.get(Calendar.MONTH) + 1 
+                                    val year = calendar.get(Calendar.YEAR)
+                                    context.saveNewNote(
+                                        noteTitle = noteTitleState.value,
+                                        noteContent = noteBodyState.value,
+                                        day = day,
+                                        month = month,
+                                        year = year,
+                                        items = noteItemsState.value
+                                    )
+                                }
+                            }
+                        },
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
+                            .align(Alignment.BottomEnd),
+                        isEnabled = canBeSaved
                     )
                 }
             }

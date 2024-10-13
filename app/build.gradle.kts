@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.protobuf)
 }
 
 android {
@@ -73,6 +74,25 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.datastore.preferences)
+    implementation("com.google.code.gson:gson:2.8.8")
     implementation("androidx.compose.material:material:1.5.1")
+    implementation (libs.androidx.datastore)
+    implementation (libs.protobuf.javalite)
 
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.7"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

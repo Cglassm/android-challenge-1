@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,28 +19,31 @@ import androidx.compose.ui.unit.dp
 import com.example.android_challenge_1.components.CustomTextButton
 
 @Composable
-fun NoteItemsList() {
-    var items by remember { mutableStateOf(listOf<String>())}
+fun NoteItemsList(items: MutableState<List<String>>) {
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+           ,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items.forEachIndexed { index, item ->
+        items.value.forEachIndexed { index, item ->
             NoteItem(
                 text = item,
                 onTextChange = { newText ->
-                    items = items.toMutableList().apply { set(index, newText) }
+                    items.value = items.value.toMutableList().apply {
+                        set(index, newText)
+                    }
                 },
                 onDelete = {
-                    items = items.toMutableList().apply { removeAt(index) }
+                    items.value = items.value.toMutableList().apply { removeAt(index) }
                 }
             )
         }
         CustomTextButton(
-            onClick = { items = items + "" },
+            onClick = {
+                items.value += ""
+            },
             text = "+",
             textColor =  Color.White,
             modifier = Modifier
