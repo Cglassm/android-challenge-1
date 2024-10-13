@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import Usernote.UserNote
-import  Usernote.ListNote
+import Usernote.ListNote
 import androidx.compose.runtime.collectAsState
 import com.example.android_challenge_1.utils.protoDataStore
 import kotlinx.coroutines.flow.Flow

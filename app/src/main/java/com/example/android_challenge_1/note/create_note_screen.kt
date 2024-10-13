@@ -43,6 +43,8 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
     val modifier = Modifier
         .fillMaxWidth()
         .padding(32.dp)
+    val noteItemsState = remember { mutableStateOf(listOf<String>()) }
+    val canBeSaved = noteTitleState.value.isNotEmpty()
 
     Scaffold(
         containerColor = Color.White,
@@ -84,20 +86,32 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                         .height(200.dp),
                     maxLines = 50
                 )
-                NoteItemsList()
+                NoteItemsList(
+                    items = noteItemsState
+                )
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     CreateNoteButton(
-                        onClick =  {
-                            onSave("")
-                            scope.launch {
-                                context.saveNewNote(noteTitle = noteTitleState.value, noteContent = noteBodyState.value, day = 1, month = 1, year = 2024, items = listOf("hola", "como", "estas"))
+                        onClick = {
+                            if (canBeSaved) {
+                                onSave("")
+                                scope.launch {
+                                    context.saveNewNote(
+                                        noteTitle = noteTitleState.value,
+                                        noteContent = noteBodyState.value,
+                                        day = 1,
+                                        month = 1,
+                                        year = 2024,
+                                        items = noteItemsState.value
+                                    )
+                                }
                             }
                         },
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
+                            .align(Alignment.BottomEnd),
+                        isEnabled = canBeSaved
                     )
                 }
             }
