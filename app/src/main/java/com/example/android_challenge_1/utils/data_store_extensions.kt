@@ -24,7 +24,6 @@ val Context.protoDataStore: DataStore<ListNote> by dataStore(
 suspend fun Context.saveNewNote(noteTitle: String, noteContent: String, day: Int, month: Int, year: Int, items: List<String>) {
     val newNote = protoDataStore.updateData {
             userNotes ->
-            // Crear la nueva nota con los campos proporcionados
             val newNote = UserNote.newBuilder()
                 .setTitle(noteTitle)
                 .setContenido(noteContent)
@@ -35,33 +34,65 @@ suspend fun Context.saveNewNote(noteTitle: String, noteContent: String, day: Int
                         .setYear(year)
                         .build()
                 )
-                .addAllItem(items) // Agregar todos los items de la lista
+                .addAllItem(items)
                 .build()
 
-            // Agregar la nueva nota a la lista de notas existente
             userNotes.toBuilder()
-                .addNotes(newNote) // Suponiendo que 'notes' es una lista en tu proto
+                .addNotes(newNote)
                 .build()
 
-
-
-
-//            it.toBuilder()
-//                .addNotes(
-//                    UserNote.newBuilder()
-//                        .setTitle(noteTitle)
-//                        .setContenido(noteContent)
-//                        .setFecha( Date.newBuilder()
-//                            .setDay(day)
-//                            .setMonth(month)
-//                            .setYear(year)
-//                            .build())
-//                        .addItem(items[0])
-//                        .build()
-//                )
-//                .build()
         }
 }
+
+suspend fun Context.deleteNote(noteId: Int) {
+    protoDataStore.updateData { userNotes ->
+        val updatedNotes = userNotes.notesList.filter { it.id != noteId }
+        userNotes.toBuilder()
+            .clearNotes()
+            .addAllNotes(updatedNotes)
+            .build()
+    }
+}
+
+suspend fun Context.editNote(
+    noteId: Int,
+    newTitle: String? = null,
+    newContent: String? = null,
+    newDay: Int? = null,
+    newMonth: Int? = null,
+    newYear: Int? = null,
+    newItems: List<String>? = null
+) {
+    protoDataStore.updateData { userNotes ->
+        val updatedNotes = userNotes.notesList.map { note ->
+            if (note.id == noteId) {
+                note.toBuilder()
+                    .apply {
+                        newTitle?.let { setTitle(it) }
+                        newContent?.let { setContenido(it) }
+                        if (newDay != null && newMonth != null && newYear != null) {
+                            setFecha(
+                                Date.newBuilder()
+                                    .setDay(newDay)
+                                    .setMonth(newMonth)
+                                    .setYear(newYear)
+                                    .build()
+                            )
+                        }
+                        newItems?.let { clearItem().addAllItem(it) }
+                    }
+                    .build()
+            } else {
+                note
+            }
+        }
+        userNotes.toBuilder()
+            .clearNotes()
+            .addAllNotes(updatedNotes)
+            .build()
+    }
+}
+
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "prefs")
 
@@ -94,11 +125,18 @@ suspend fun Context.hasStoredCredentials(): Boolean {
     return !email.isNullOrEmpty() && !password.isNullOrEmpty()
 }
 
-suspend fun Context.clearPreferences() {
+suspend fun Context.clearAllData() {
     dataStore.edit { preferences ->
         preferences.clear()
     }
+    protoDataStore.updateData { userNotes ->
+        userNotes.toBuilder()
+            .clearNotes()
+            .build()
+    }
 }
+
+
 
 suspend fun Context.saveNotes(notes: List<Note>) {
     val notesJson = gson.toJson(notes)

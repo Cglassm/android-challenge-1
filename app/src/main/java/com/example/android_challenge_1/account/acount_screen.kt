@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.auth.LoginScreen
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
-import com.example.android_challenge_1.utils.clearPreferences
+import com.example.android_challenge_1.utils.clearAllData
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -79,7 +79,7 @@ fun AccountScreen(onLogOutPressed: () -> Unit, onDeleteAccountPressed: () -> Uni
                 text = "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción eliminará tus notas y datos y no se puede deshacer.",
                 confirmButtonPressed = {
                     coroutineScope.launch {
-                        context.clearPreferences()
+                        context.clearAllData()
                         onDeleteAccountPressed()
                     }
                     deleteDialogShown = false
