@@ -78,6 +78,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.5.1")
     implementation (libs.androidx.datastore)
     implementation (libs.protobuf.javalite)
+    implementation ("androidx.core:core-splashscreen:1.0.0")
 
 }
 
