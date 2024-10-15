@@ -112,7 +112,7 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                                         day = day,
                                         month = month,
                                         year = year,
-                                        items = noteItemsState.value
+                                        items = noteItemsState.value,
                                     )
                                 }
                             }

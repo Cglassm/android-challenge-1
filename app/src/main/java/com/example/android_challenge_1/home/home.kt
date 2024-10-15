@@ -43,7 +43,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.android_challenge_1.note.DeleteNoteAlert
+import com.example.android_challenge_1.utils.deleteNote
 import com.example.android_challenge_1.utils.protoDataStore
 import kotlinx.coroutines.flow.Flow
 
@@ -54,9 +63,29 @@ fun Home(onCreateNote: () -> Unit) {
     val scope = rememberCoroutineScope()
     val userNotesFlow: Flow<ListNote> = context.protoDataStore.data
     val listaNotas = userNotesFlow.collectAsState(initial = ListNote.getDefaultInstance())
+    var showDeleteNoteDialog by remember { mutableStateOf(false) }
+    var noteToDelete by remember { mutableStateOf<UserNote?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    if (showDeleteNoteDialog && noteToDelete != null) {
+        DeleteNoteAlert(
+            onDismissRequest = { showDeleteNoteDialog = false },
+            onConfirmButtonPressed = {
+                scope.launch {
+                    context.deleteNote(noteId = noteToDelete!!.id)
+                    snackbarHostState.showSnackbar(
+                        "Se eliminó correctamente",
+                        duration = SnackbarDuration.Short,
+                    )
+                }
+                showDeleteNoteDialog = false
+            },
+            onDismissButtonPressed = { showDeleteNoteDialog = false }
+        )
+    }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { onCreateNote() },
@@ -95,8 +124,14 @@ fun Home(onCreateNote: () -> Unit) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        items(listaNotas.value.notesList) {
-                            NoteCard(it)
+                        items(listaNotas.value.notesList) { note ->
+                            NoteCard(
+                                note = note,
+                                onDeleteNote = {
+                                    noteToDelete = note
+                                    showDeleteNoteDialog = true
+                                },
+                            )
                         }
                     }
                 }
@@ -105,71 +140,6 @@ fun Home(onCreateNote: () -> Unit) {
     )
 }
 
-@Composable
-fun NoteCard(note: UserNote) {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        elevation = CardDefaults.cardElevation(6.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    note.title,
-                    modifier = Modifier.padding(6.dp),
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                    IconButton(onClick = {
-                        //TODO: Add onEditNote
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "Editar nota",
-                            tint = Color(0xFF4B0082)
-                        )
-                    }
-                    IconButton(onClick = {
-                        // TODO: Add onDeleteNote
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Eliminar nota",
-                            tint = Color(0xFF4B0082)
-                        )
-                    }
-                }
-            }
-            Text(
-                note.contenido,
-                modifier = Modifier.padding(6.dp),
-            )
-            if (note.itemList.isNotEmpty()) {
-                note.itemList.forEach {
-                    Text(
-                        text = "- " + it,
-                        modifier = Modifier.padding(6.dp)
-                    )
-                }
-            }
-            Text(
-                text = "${note.fecha.day}/${note.fecha.month}/${note.fecha.year}",
-                fontSize = 12.sp,
-                color = Color.Gray,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 8.dp, bottom = 8.dp)
-            )
-        }
-    }
-}
 
 @Preview
 @Composable

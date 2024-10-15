@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.first
 import Usernote.ListNote
 import Usernote.UserNote
 import Usernote.Date
+import androidx.datastore.preferences.core.intPreferencesKey
 
 const val DATA_STORE_FILE_NAME = "user_prefs.pb"
 
@@ -21,27 +22,47 @@ val Context.protoDataStore: DataStore<ListNote> by dataStore(
     serializer = ListNoteSerializer
 )
 
-suspend fun Context.saveNewNote(noteTitle: String, noteContent: String, day: Int, month: Int, year: Int, items: List<String>) {
-    val newNote = protoDataStore.updateData {
-            userNotes ->
-            val newNote = UserNote.newBuilder()
-                .setTitle(noteTitle)
-                .setContenido(noteContent)
-                .setFecha(
-                    Date.newBuilder()
-                        .setDay(day)
-                        .setMonth(month)
-                        .setYear(year)
-                        .build()
-                )
-                .addAllItem(items)
-                .build()
+private val LAST_NOTE_ID_KEY = intPreferencesKey("last_note_id")
 
-            userNotes.toBuilder()
-                .addNotes(newNote)
-                .build()
+suspend fun Context.getNextNoteId(): Int {
+    val preferences = dataStore.data.first()
+    val lastNoteId = preferences[LAST_NOTE_ID_KEY] ?: 0
+    dataStore.edit { settings ->
+        settings[LAST_NOTE_ID_KEY] = lastNoteId + 1
+    }
+    return lastNoteId + 1
+}
 
-        }
+suspend fun Context.saveNewNote(
+    noteTitle: String,
+    noteContent: String,
+    day: Int,
+    month: Int,
+    year: Int,
+    items: List<String>,
+) {
+    println(noteTitle)
+    val newId = getNextNoteId()
+    val newNote = protoDataStore.updateData { userNotes ->
+        val newNote = UserNote.newBuilder()
+            .setTitle(noteTitle)
+            .setId(newId)
+            .setContenido(noteContent)
+            .setFecha(
+                Date.newBuilder()
+                    .setDay(day)
+                    .setMonth(month)
+                    .setYear(year)
+                    .build()
+            )
+            .addAllItem(items)
+            .build()
+
+        userNotes.toBuilder()
+            .addNotes(newNote)
+            .build()
+
+    }
 }
 
 suspend fun Context.deleteNote(noteId: Int) {
@@ -137,10 +158,9 @@ suspend fun Context.clearAllData() {
 }
 
 
-
 suspend fun Context.saveNotes(notes: List<Note>) {
     val notesJson = gson.toJson(notes)
-    dataStore.edit { preferences  ->
+    dataStore.edit { preferences ->
         preferences[NOTES_LIST] = notesJson
     }
 }
