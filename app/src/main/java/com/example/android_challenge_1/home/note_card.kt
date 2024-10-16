@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
 @Composable
-fun NoteCard(note: Usernote.UserNote, onDeleteNote: () -> Unit) {
+fun NoteCard(note: Usernote.UserNote, onDeleteNote: () -> Unit, onEditNote: (Int) -> Unit) {
     println(note)
     val scope = rememberCoroutineScope()
     Card(
@@ -51,7 +51,7 @@ fun NoteCard(note: Usernote.UserNote, onDeleteNote: () -> Unit) {
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                     IconButton(onClick = {
-                        //TODO: Add onEditNote
+                        onEditNote(note.id)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Edit,

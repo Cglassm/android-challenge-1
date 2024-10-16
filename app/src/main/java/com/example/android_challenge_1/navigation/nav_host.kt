@@ -65,46 +65,25 @@ fun OurNavHost(
                 )
             ) { backStackEntry ->
                 val email = backStackEntry.arguments?.getString("email") ?: ""
-
-                val notes = listOf(
-                    Note(
-                        "How To Draw A Professional Wireframe?",
-                        "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.",
-                        Date(),
-                        listOf()
-                    ),
-                    Note(
-                        "Ways To Succeed Early",
-                        "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.",
-                        Date(),
-                        listOf("Item 1", "Item 2", "Item 3")
-                    ),
-                    Note(
-                        "Scientific Facts Of Space",
-                        "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.",
-                        Date(),
-                        listOf()
-                    ),
-                    Note(
-                        "Ways To Succeed Early",
-                        "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.",
-                        Date(),
-                        listOf("Item 1", "Item 2", "Item 3")
-                    ),
-                    Note(
-                        "Scientific Facts Of Space",
-                        "Esta es una nota de prueba para la preview, ajja, añosdfja., no se wque poner aca pero tiene que ser largo para ver como queda la card xd.",
-                        Date(),
-                        listOf()
-                    ),
+                Home(
+                    onCreateNote = { navController.navigate("CreateNotescreen/0") },
+                    onEditNote = { id ->
+                        navController.navigate("CreateNotescreen/$id")
+                    }
                 )
-                Home( onCreateNote = { navController.navigate("CreateNotescreen") } )
             }
-            composable("CreateNotescreen") {
+            composable(
+                    route ="CreateNotescreen/{id}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.IntType },
+                    )
+                ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("id", 0) ?: 0
                 CreateNotescreen(
                     onSave = {
                         navController.popBackStack()
-                    }
+                    },
+                    noteId = id,
                 )
             }
             composable("AccountScreen") {

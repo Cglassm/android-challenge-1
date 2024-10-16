@@ -58,7 +58,7 @@ import kotlinx.coroutines.flow.Flow
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
-fun Home(onCreateNote: () -> Unit) {
+fun Home(onCreateNote: () -> Unit, onEditNote: (Int) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val userNotesFlow: Flow<ListNote> = context.protoDataStore.data
@@ -131,6 +131,7 @@ fun Home(onCreateNote: () -> Unit) {
                                     noteToDelete = note
                                     showDeleteNoteDialog = true
                                 },
+                                onEditNote = { onEditNote(note.id) },
                             )
                         }
                     }
@@ -190,5 +191,5 @@ fun HomePreview() {
         ),
     )
     val navController = rememberNavController()
-    Home({})
+    Home({},{})
 }
