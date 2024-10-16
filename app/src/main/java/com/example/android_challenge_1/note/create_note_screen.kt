@@ -85,7 +85,7 @@ fun CreateNotescreen(onSave: (String) -> Unit, noteId: Int) {
 
 
                 Text(
-                    text = "Es momento de crear la nota!", modifier = modifier, style = TextStyle(
+                    text =  if (noteId ==0) "Es momento de crear la nota!" else "Es momento de editar la nota!" , modifier = modifier, style = TextStyle(
                         color = Color(0xFF4B0082),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.W300,
