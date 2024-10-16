@@ -14,6 +14,8 @@ import Usernote.ListNote
 import Usernote.UserNote
 import Usernote.Date
 import androidx.datastore.preferences.core.intPreferencesKey
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 const val DATA_STORE_FILE_NAME = "user_prefs.pb"
 
@@ -112,6 +114,13 @@ suspend fun Context.editNote(
             .addAllNotes(updatedNotes)
             .build()
     }
+}
+
+suspend fun Context.getNoteById(id:Int) : UserNote? {
+    val note = protoDataStore.data.map { userNotes ->
+        userNotes.notesList.find{ it.id == id }
+    }.first()
+    return note
 }
 
 

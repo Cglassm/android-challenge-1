@@ -35,9 +35,14 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
+import Usernote.UserNote
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.setValue
+import com.example.android_challenge_1.utils.editNote
+import com.example.android_challenge_1.utils.getNoteById
 
 @Composable
-fun CreateNotescreen(onSave: (String) -> Unit) {
+fun CreateNotescreen(onSave: (String) -> Unit, noteId: Int) {
     val context = LocalContext.current
     val noteTitleState = remember { mutableStateOf("") }
     val noteBodyState = remember { mutableStateOf("") }
@@ -47,6 +52,9 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
         .fillMaxWidth()
         .padding(32.dp)
     val noteItemsState = remember { mutableStateOf(listOf<String>()) }
+
+
+
     val canBeSaved =
         noteTitleState.value.isNotEmpty() || noteBodyState.value.isNotEmpty() || noteItemsState.value.isNotEmpty()
 
@@ -64,6 +72,18 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                LaunchedEffect(noteId) {
+                    if (noteId > 0) {
+                        val newNote = context.getNoteById(noteId)
+                        if (newNote != null) {
+                            noteTitleState.value = newNote.title
+                            noteBodyState.value = newNote.contenido
+                            noteItemsState.value = newNote.itemList
+                        }
+                    }
+                }
+
+
                 Text(
                     text = "Es momento de crear la nota!", modifier = modifier, style = TextStyle(
                         color = Color(0xFF4B0082),
@@ -100,21 +120,34 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
                     CreateNoteButton(
                         onClick = {
                             if (canBeSaved) {
-                                onSave("")
                                 scope.launch {
                                     val calendar = Calendar.getInstance()
                                     val day = calendar.get(Calendar.DAY_OF_MONTH)
                                     val month = calendar.get(Calendar.MONTH) + 1
                                     val year = calendar.get(Calendar.YEAR)
-                                    context.saveNewNote(
-                                        noteTitle = noteTitleState.value,
-                                        noteContent = noteBodyState.value,
-                                        day = day,
-                                        month = month,
-                                        year = year,
-                                        items = noteItemsState.value,
-                                    )
+                                    val prevNote = context.getNoteById(noteId)
+                                    if (noteId > 0 && prevNote != null){
+                                        context.editNote(
+                                            noteId = noteId,
+                                            newTitle = noteTitleState.value,
+                                            newContent = noteBodyState.value,
+                                            newDay = day,
+                                            newMonth = month,
+                                            newYear = year,
+                                            newItems = noteItemsState.value,
+                                        )
+                                    } else {
+                                        context.saveNewNote(
+                                            noteTitle = noteTitleState.value,
+                                            noteContent = noteBodyState.value,
+                                            day = day,
+                                            month = month,
+                                            year = year,
+                                            items = noteItemsState.value,
+                                        )
+                                    }
                                 }
+                                onSave("")
                             }
                         },
                         modifier = Modifier
@@ -135,6 +168,6 @@ fun CreateNotescreen(onSave: (String) -> Unit) {
 @Composable
 private fun HomeScreenPreview(modifier: Modifier = Modifier) {
     Androidchallenge1Theme {
-        CreateNotescreen(onSave = {})
+        CreateNotescreen(onSave = {}, 0)
     }
 }
