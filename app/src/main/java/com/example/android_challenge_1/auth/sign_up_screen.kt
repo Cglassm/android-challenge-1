@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_challenge_1.components.CustomTextButton
-import com.example.android_challenge_1.components.OutLineTextField
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
 import com.example.android_challenge_1.utils.isValidEmail
 import androidx.compose.ui.platform.LocalContext

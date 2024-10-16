@@ -14,6 +14,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,21 +26,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp.Companion.Infinity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.android_challenge_1.components.CustomTextButton
 import com.example.android_challenge_1.ui.theme.Androidchallenge1Theme
-import com.example.android_challenge_1.utils.saveNewNote
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.util.Calendar
-import java.util.Date
-import Usernote.UserNote
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.setValue
 import com.example.android_challenge_1.utils.editNote
 import com.example.android_challenge_1.utils.getNoteById
+import com.example.android_challenge_1.utils.saveNewNote
+import kotlinx.coroutines.launch
+import java.util.Calendar
 
 @Composable
 fun CreateNotescreen(onSave: (String) -> Unit, noteId: Int) {
